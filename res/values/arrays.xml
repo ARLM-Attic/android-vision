@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="filters_available">
+        <item>Blur</item>
+        <!-- <item>Math. Morphology</item> -->
+        <!-- <item>Histogram</item> -->
+    </string-array>    
+    <string-array name="filters_blur_items">
+        <item>None</item>
+        <item>Box</item>
+        <item>Median</item>
+        <item>Gausian</item>
+    </string-array>    
+    <string-array name="filters_mathmorph_items">
+        <item>None</item>
+        <item>Erosion</item>
+        <item>Dilation</item>
+        <item>Opening</item>
+        <item>Closing</item>
+        <item>Blackhat</item>
+        <item>Tophat</item>
+        <item>Gradient</item>
+    </string-array>    
+</resources>
