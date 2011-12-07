@@ -7,5 +7,5 @@
     <EditText android:id="@+id/editKernalSizeBox" android:layout_height="wrap_content" android:layout_width="match_parent" android:inputType="number">
         <requestFocus></requestFocus>
     </EditText>
-    <!-- <com.hfk.widget.MatrixView android:id="@+id/matrixBoxKernel" android:layout_height="wrap_content" android:layout_width="fill_parent"/> -->
+    <com.hfk.imageprocessing.widget.KernelView android:id="@+id/matrixBoxKernel" android:layout_height="wrap_content" android:layout_width="fill_parent"/>
 </LinearLayout>

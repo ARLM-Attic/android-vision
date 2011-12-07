@@ -24,6 +24,8 @@
 		<activity android:name="com.hfk.imageprocessing.ImageProcessingActivity"></activity>
 		<activity android:name="com.hfk.imageprocessing.DrawableImageProcessingActivity"></activity>
         <activity android:name="com.hfk.imageprocessing.blur.MedianConfig"></activity>
+        <activity android:name="com.hfk.imageprocessing.blur.BoxConfig"></activity>
+        <activity android:name="com.hfk.imageprocessing.blur.GaussianConfig"></activity>
     </application>
 
     <uses-permission android:name="android.permission.CAMERA"/>

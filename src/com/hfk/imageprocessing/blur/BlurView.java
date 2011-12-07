@@ -4,10 +4,10 @@ import org.opencv.android;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
-import android.content.Context;
+import android.content.*;
 import android.content.res.*;
-import android.os.Bundle;
-import android.widget.Toast;
+import android.os.*;
+import android.widget.*;
 
 import com.hfk.imageprocessing.*;
 import com.hfk.imageprocessing.gesture.ActionGesture;

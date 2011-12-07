@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 
 import com.hfk.imageprocessing.R;
-import com.hfk.widget.*;
+import com.hfk.imageprocessing.widget.*;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -27,7 +27,7 @@ public class BoxConfig extends Activity {
         this.setContentView(R.layout.blur_box);
         
         mTextKernelSize = (EditText)findViewById(R.id.editKernalSizeBox);
-//        mKernelMatrix = (MatrixView)findViewById(R.id.matrixBoxKernel);
+        mKernelMatrix = (KernelView)findViewById(R.id.matrixBoxKernel);
         
         Bundle data = getIntent().getExtras();
         if(data != null){
@@ -88,19 +88,21 @@ public class BoxConfig extends Activity {
 	}
 	
 	private void updateKernelMatrix() {
-//		String kernelValueAsString = mTextKernelSize.getText().toString();
-//		if((kernelValueAsString == null || kernelValueAsString.length() == 0)) {
-//			return;
-//		}
-//		
-//		int kernelValue = Integer.parseInt(kernelValueAsString);
-//    	
-//    	mKernelMatrix.setNumberOfColumns(kernelValue);
-//    	mKernelMatrix.setNumberOfRows(kernelValue);
-//	    
-//    	mKernelMatrix.invalidate();
+		String kernelValueAsString = mTextKernelSize.getText().toString();
+		if((kernelValueAsString == null || kernelValueAsString.length() == 0)) {
+			return;
+		}
+		
+		int kernelValue = Integer.parseInt(kernelValueAsString);
+    	
+    	mKernelMatrix.setNumberOfColumns(kernelValue);
+    	mKernelMatrix.setNumberOfRows(kernelValue);
+    	
+    	mKernelMatrix.setKernelCenter((kernelValue-1)/2, (kernelValue-1)/2);
+	    
+    	mKernelMatrix.invalidate();
 	}
 
 	private EditText mTextKernelSize;
-	private MatrixView mKernelMatrix;
+	private KernelView mKernelMatrix;
 }
