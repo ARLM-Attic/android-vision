@@ -163,6 +163,8 @@ public class BlurView extends ImageProcessingView implements ActionGesture {
     		//mText = "Applying Block";
     		configBundle = new Bundle();
     		configBundle.putInt("KERNEL_SIZE", kernel);
+    		configBundle.putInt("KERNEL_CENTERX", (kernel+1)/2);
+    		configBundle.putInt("KERNEL_CENTERY", (kernel+1)/2);
     		break;
     	case 2:
     		//mText = "Applying Median";
@@ -191,6 +193,17 @@ public class BlurView extends ImageProcessingView implements ActionGesture {
     	{
     		kernelValue = configValues.getInt("KERNEL_SIZE", kernel);
     	}
+    	int kernelCenterX = (kernel+1)/2;
+    	if(configValues != null && configValues.containsKey("KERNEL_CENTERX"))
+    	{
+    		kernelCenterX = configValues.getInt("KERNEL_CENTERX", (kernel+1)/2);
+    	}
+    	int kernelCenterY = (kernel+1)/2;
+    	if(configValues != null && configValues.containsKey("KERNEL_CENTERY"))
+    	{
+    		kernelCenterY = configValues.getInt("KERNEL_CENTERY", (kernel+1)/2);
+    	}
+    	
     	double sigmaValue = sigma;
     	if(configValues != null && configValues.containsKey("SIGMA"))
     	{
@@ -205,7 +218,7 @@ public class BlurView extends ImageProcessingView implements ActionGesture {
     		break;
     	case 1:
     		text.append("Applying Box " + kernelValue);
-        	Imgproc.blur(sourceMat, targetMat, sz);
+        	Imgproc.blur(sourceMat, targetMat, sz, new Point(kernelCenterX, kernelCenterY));
     		break;
     	case 2:
     		text.append("Applying Median " + kernelValue);

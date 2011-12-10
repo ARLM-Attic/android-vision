@@ -79,6 +79,8 @@ public class BoxConfig extends Activity {
 
 	    Bundle b = new Bundle();
 	    b.putInt("KERNEL_SIZE", Integer.parseInt(mTextKernelSize.getText().toString()));
+	    b.putInt("KERNEL_CENTERX", mKernelMatrix.getCenterX());
+	    b.putInt("KERNEL_CENTERY", mKernelMatrix.getCenterY());
 
 	    result.putExtras(b);
 
@@ -98,7 +100,7 @@ public class BoxConfig extends Activity {
     	mKernelMatrix.setNumberOfColumns(kernelValue);
     	mKernelMatrix.setNumberOfRows(kernelValue);
     	
-    	mKernelMatrix.setKernelCenter((kernelValue-1)/2, (kernelValue-1)/2);
+    	mKernelMatrix.setKernelCenter((kernelValue+1)/2, (kernelValue+1)/2);
 	    
     	mKernelMatrix.invalidate();
 	}
