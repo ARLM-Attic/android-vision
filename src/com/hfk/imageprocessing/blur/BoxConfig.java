@@ -31,8 +31,16 @@ public class BoxConfig extends Activity {
         
         Bundle data = getIntent().getExtras();
         if(data != null){
-        	if(data.containsKey("KERNEL_SIZE"))
-        		mTextKernelSize.setText(Integer.toString(data.getInt("KERNEL_SIZE")));        	
+        	if(data.containsKey("KERNEL_SIZE")) {
+        		int kernelSize = data.getInt("KERNEL_SIZE");
+        		mTextKernelSize.setText(Integer.toString(kernelSize));        		
+        		mKernelMatrix.setNumberOfColumns(kernelSize);
+        		mKernelMatrix.setNumberOfRows(kernelSize);
+        	}
+        		
+        	if(data.containsKey("KERNEL_CENTERX") && data.containsKey("KERNEL_CENTERY")) {        		
+        		mKernelMatrix.setKernelCenter(data.getInt("KERNEL_CENTERX"), data.getInt("KERNEL_CENTERY"));
+        	}
         }
         
         TextWatcher kernelSizeTextWatcher = new TextWatcher() 
@@ -70,7 +78,7 @@ public class BoxConfig extends Activity {
 	
 	@Override public void onResume() {     
 		super.onResume(); 
-		updateKernelMatrix();
+		//updateKernelMatrix();
 	} 
 
 	@Override
@@ -100,7 +108,7 @@ public class BoxConfig extends Activity {
     	mKernelMatrix.setNumberOfColumns(kernelValue);
     	mKernelMatrix.setNumberOfRows(kernelValue);
     	
-    	mKernelMatrix.setKernelCenter((kernelValue+1)/2, (kernelValue+1)/2);
+    	mKernelMatrix.setKernelCenter((kernelValue-1)/2, (kernelValue-1)/2);
 	    
     	mKernelMatrix.invalidate();
 	}

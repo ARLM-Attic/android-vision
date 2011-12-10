@@ -70,12 +70,6 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
 	    	int bottomKernelSize = bottomConfigBundle.getInt("KERNEL_SIZE");
 	    	bottomConfigBundle.putInt("KERNEL_SIZE", IncrementKernelValue(bottomKernelSize));
     	}
-    	
-//		int newValue = size;
-//	    StringBuilder sb = new StringBuilder();
-//        //sb.append("[").append(mainView.getWidth() / 2).append("][").append(e.getX()).append("]");
-//	    sb.append("Increment[").append(newValue).append("]");
-//    	Toast.makeText(this.getContext(), sb.toString(), Toast.LENGTH_SHORT).show();
     }
     
     public int IncrementKernelValue(int kernelValue)
@@ -104,13 +98,6 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
 	    	int bottomKernelSize = bottomConfigBundle.getInt("KERNEL_SIZE");
 	    	bottomConfigBundle.putInt("KERNEL_SIZE", DecrementKernelValue(bottomKernelSize));
     	}
-		
-//	    int newValue = size;
-//	    StringBuilder sb = new StringBuilder();
-//        //sb.append("[").append(mainView.getWidth() / 2).append("][").append(e.getX()).append("]");
-//        sb.append("Decrement[").append(newValue).append("]");
-//		Toast.makeText(this.getContext(), sb.toString(), Toast.LENGTH_SHORT).show();
-		
 	}
     
     public int DecrementKernelValue(int kernelValue)

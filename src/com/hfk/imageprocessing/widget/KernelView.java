@@ -26,7 +26,7 @@ public class KernelView extends MatrixView {
 			}
 		}
 
-    	setCellStyle(kernelCenterX, row, Color.RED);
+    	setCellStyle(kernelCenterX, kernelCenterY, Color.RED);
     	
     	invalidate();    	
     }
