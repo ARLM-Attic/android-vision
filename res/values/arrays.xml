@@ -2,7 +2,7 @@
 <resources>
     <string-array name="filters_available">
         <item>Blur</item>
-        <!-- <item>Math. Morphology</item> -->
+        <item>Math. Morphology</item>
         <!-- <item>Histogram</item> -->
     </string-array>    
     <string-array name="filters_blur_items">
