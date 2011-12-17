@@ -1,7 +1,6 @@
 package com.hfk.imageprocessing.mathematicalmorphology;
 
-import org.opencv.core.Mat;
-import org.opencv.core.Size;
+import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
 import android.content.Context;
@@ -10,13 +9,20 @@ import android.os.Bundle;
 
 import com.hfk.imageprocessing.ImageProcessingView;
 import com.hfk.imageprocessing.R;
-//import com.hfk.imageprocessing.blur.GaussianConfig;
-//import com.hfk.imageprocessing.blur.MedianConfig;
 import com.hfk.imageprocessing.gesture.ActionGesture;
 
 public class MathMorphView extends ImageProcessingView implements ActionGesture {
+	static final int None = 0;
+	static final int Erosion = 1;
+	static final int Dilation = 2;
+	static final int Opening = 3;
+	static final int Closing = 4;
+	static final int Blackhat = 5;
+	static final int Tophat = 6;
+	static final int Gradient = 7;
+
 	int kernel = 5;
-	double sigma = 2.0;
+	int shape = Imgproc.MORPH_RECT;
 	
     public MathMorphView(Context context) {
         super(context);
@@ -116,25 +122,17 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     public Class<?> getConfigClassForFilter(int filter)
     {
     	Class<?> configClass = null; 
-//    	switch(filter) {
-//    	case 0:
-//    		//mText = "Applying None";
-//    		break;
-//    	case 1:
-//    		//mText = "Applying Block";
-//    		break;
-//    	case 2:
-//    		//mText = "Applying Median";
-//    		configClass = MedianConfig.class;
-//    		break;
-//    	case 3:
-//    		//mText = "Applying Gaussian";
-//    		configClass = GaussianConfig.class;
-//    		break;
-//		default:
-//			//mText = "Applying Default";
-//			break;
-//    	}
+    	switch(filter) {
+    	case 0:
+    		break;
+    	case 1:
+    	case 2:
+    	case 3:
+    		configClass = StructElmConfig.class;
+    		break;
+		default:
+			break;
+    	}
     	
     	return configClass;
     }
@@ -143,30 +141,19 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     public Bundle getDefaultConfigBundleForFilter(int filter)
     {
     	Bundle configBundle = null; 
-//    	switch(filter) {
-//    	case 0:
-//    		//mText = "Applying None";
-//    		break;
-//    	case 1:
-//    		//mText = "Applying Block";
-//    		configBundle = new Bundle();
-//    		configBundle.putInt("KERNEL_SIZE", kernel);
-//    		break;
-//    	case 2:
-//    		//mText = "Applying Median";
-//    		configBundle = new Bundle();
-//    		configBundle.putInt("KERNEL_SIZE", kernel);
-//    		break;
-//    	case 3:
-//    		//mText = "Applying Gaussian";
-//    		configBundle = new Bundle();
-//    		configBundle.putInt("KERNEL_SIZE", kernel);
-//    		configBundle.putDouble("SIGMA", sigma);
-//    		break;
-//		default:
-//			//mText = "Applying Default";
-//			break;
-//    	}
+    	switch(filter) {
+    	case 0:
+    		break;
+    	case 1:
+    	case 2:
+    	case 3:
+    		configBundle = new Bundle();
+    		configBundle.putInt("KERNEL_SIZE", kernel);
+    		configBundle.putInt("KERNEL_SHAPE", shape);
+    		break;
+		default:
+			break;
+    	}
     	
     	return configBundle;
     }
@@ -174,57 +161,58 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     @Override
     protected void applyFilter(int filter, Mat sourceMat, Mat targetMat, Bundle configValues, StringBuilder text)
     {
-//    	int kernelValue = kernel;
-//    	if(configValues != null && configValues.containsKey("KERNEL_SIZE"))
-//    	{
-//    		kernelValue = configValues.getInt("KERNEL_SIZE", kernel);
-//    	}
-//    	double sigmaValue = sigma;
-//    	if(configValues != null && configValues.containsKey("SIGMA"))
-//    	{
-//    		sigmaValue = configValues.getDouble("SIGMA", sigma);
-//    	}
-//    	
-//    	Size sz = new Size(kernelValue, kernelValue); 
+    	int kernelValue = kernel;
+    	if(configValues != null && configValues.containsKey("KERNEL_SIZE"))
+    	{
+    		kernelValue = configValues.getInt("KERNEL_SIZE", kernel);
+    	}
+    	int shapeValue = shape;
+    	if(configValues != null && configValues.containsKey("KERNEL_SHAPE"))
+    	{
+    		shapeValue = configValues.getInt("KERNEL_SHAPE", shapeValue);
+    	}
+    	
+    	Size sz = new Size(kernelValue, kernelValue); 
+    	Mat kernel = Imgproc.getStructuringElement(shapeValue, sz, new Point(-1, -1));
     	switch(filter) {
-    	case 0:
+    	case None:
     		text.append("Applying None");
     		sourceMat.copyTo(targetMat);
     		break;
-    	case 1:
+    	case Erosion:
     		text.append("Applying Erosion"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.erode(targetMat, targetMat, new Mat());
+        	Imgproc.erode(targetMat, targetMat, kernel);
     		break;
-    	case 2:
+    	case Dilation:
     		text.append("Applying Dilation"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.dilate(targetMat, targetMat, new Mat());
+        	Imgproc.dilate(targetMat, targetMat, kernel);
     		break;
-    	case 3:
+    	case Opening:
     		text.append("Applying Opening"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_OPEN, new Mat());
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_OPEN, kernel);
     		break;
-    	case 4:
+    	case Closing:
     		text.append("Applying Closing"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_CLOSE, new Mat());
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_CLOSE, kernel);
     		break;
-    	case 5:
+    	case Blackhat:
     		text.append("Applying Blackhat"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_BLACKHAT, new Mat());
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_BLACKHAT, kernel);
     		break;
-    	case 6:
+    	case Tophat:
     		text.append("Applying Tophat"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_TOPHAT, new Mat());
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_TOPHAT, kernel);
     		break;
-    	case 7:
+    	case Gradient:
     		text.append("Applying Gradient"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_GRADIENT, new Mat());
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_GRADIENT, kernel);
     		break;
 		default:
 			text.append("Applying Default");

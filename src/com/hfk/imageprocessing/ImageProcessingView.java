@@ -6,11 +6,7 @@ import org.opencv.imgproc.Imgproc;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.PointF;
 import android.view.SurfaceHolder;
-import android.widget.Toast;
-
-import java.text.*;
 import android.os.Bundle;
 
 

@@ -1,8 +1,5 @@
 package com.hfk.imageprocessing.blur;
 
-import org.opencv.core.Mat;
-import org.opencv.imgproc.Imgproc;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,13 +9,9 @@ import android.widget.EditText;
 import com.hfk.imageprocessing.R;
 import com.hfk.imageprocessing.widget.*;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.widget.EditText;
+
 
 public class BoxConfig extends Activity {
 	@Override

@@ -1,12 +1,9 @@
 package com.hfk.imageprocessing.widget;
 
-import java.util.ArrayList;
-
 import android.content.*;
 import android.graphics.Color;
 import android.util.*;
 import android.view.*;
-import android.graphics.*;
 
 import com.hfk.widget.*;
 
@@ -31,12 +28,20 @@ public class KernelView extends MatrixView {
     	invalidate();    	
     }
     
+    public void setKernelValue(int colIndex, int rowIndex, int value){
+    	setCellText(colIndex, rowIndex, Integer.toString(value));
+    }
+    
     public int getCenterX(){
     	return kernelCenterX;
     }
     
     public int getCenterY(){
     	return kernelCenterY;
+    }
+    
+    public int getKernelValue(int colIndex, int rowIndex) {
+    	return Integer.decode(getCellText(colIndex, rowIndex));
     }
 
     @Override

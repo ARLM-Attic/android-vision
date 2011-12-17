@@ -1,28 +1,21 @@
 package com.hfk.imageprocessing;
 
-import java.util.*; 
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
-import android.view.ScaleGestureDetector.SimpleOnScaleGestureListener;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.MenuItem;
 import android.view.GestureDetector.SimpleOnGestureListener;
-import android.widget.Toast;
 
 import com.hfk.imageprocessing.blur.BlurView;
 import com.hfk.imageprocessing.mathematicalmorphology.MathMorphView;
-import com.hfk.imageprocessing.R;
 import com.hfk.imageprocessing.gesture.*;
 
 public class ImageProcessingActivity extends Activity {

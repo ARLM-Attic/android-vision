@@ -1,18 +1,7 @@
 package com.hfk.imageprocessing.gesture;
 
-import java.text.DecimalFormat;
-
-import com.hfk.imageprocessing.ImageProcessingView;
-
-import android.graphics.PointF;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
-import android.view.View.OnTouchListener;
-import android.widget.Toast;
-import android.view.Gravity;
 
 public class PinchGestureDetector {
 

@@ -1,18 +1,21 @@
 package com.hfk.imageprocessing.blur;
 
-import org.opencv.android;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 
 import android.content.*;
 import android.content.res.*;
 import android.os.*;
-import android.widget.*;
 
 import com.hfk.imageprocessing.*;
 import com.hfk.imageprocessing.gesture.ActionGesture;
 
 public class BlurView extends ImageProcessingView implements ActionGesture {
+	static final int None = 0;
+	static final int Box = 1;
+	static final int Median = 2;
+	static final int Gaussian = 3;
+	
 	int kernel = 5;
 	double sigma = 2.0;
 	
@@ -128,18 +131,18 @@ public class BlurView extends ImageProcessingView implements ActionGesture {
     {
     	Class<?> configClass = null; 
     	switch(filter) {
-    	case 0:
+    	case None:
     		//mText = "Applying None";
     		break;
-    	case 1:
+    	case Box:
     		//mText = "Applying Block";
     		configClass = BoxConfig.class;
     		break;
-    	case 2:
+    	case Median:
     		//mText = "Applying Median";
     		configClass = MedianConfig.class;
     		break;
-    	case 3:
+    	case Gaussian:
     		//mText = "Applying Gaussian";
     		configClass = GaussianConfig.class;
     		break;
@@ -156,29 +159,24 @@ public class BlurView extends ImageProcessingView implements ActionGesture {
     {
     	Bundle configBundle = null; 
     	switch(filter) {
-    	case 0:
-    		//mText = "Applying None";
+    	case None:
     		break;
-    	case 1:
-    		//mText = "Applying Block";
+    	case Box:
     		configBundle = new Bundle();
     		configBundle.putInt("KERNEL_SIZE", kernel);
     		configBundle.putInt("KERNEL_CENTERX", (kernel-1)/2);
     		configBundle.putInt("KERNEL_CENTERY", (kernel-1)/2);
     		break;
-    	case 2:
-    		//mText = "Applying Median";
+    	case Median:
     		configBundle = new Bundle();
     		configBundle.putInt("KERNEL_SIZE", kernel);
     		break;
-    	case 3:
-    		//mText = "Applying Gaussian";
+    	case Gaussian:
     		configBundle = new Bundle();
     		configBundle.putInt("KERNEL_SIZE", kernel);
     		configBundle.putDouble("SIGMA", sigma);
     		break;
 		default:
-			//mText = "Applying Default";
 			break;
     	}
     	
@@ -212,19 +210,19 @@ public class BlurView extends ImageProcessingView implements ActionGesture {
     	
     	Size sz = new Size(kernelValue, kernelValue); 
     	switch(filter) {
-    	case 0:
+    	case None:
     		text.append("Applying None");
     		sourceMat.copyTo(targetMat);
     		break;
-    	case 1:
+    	case Box:
     		text.append("Applying Box " + kernelValue);
         	Imgproc.blur(sourceMat, targetMat, sz, new Point(kernelCenterX, kernelCenterY));
     		break;
-    	case 2:
+    	case Median:
     		text.append("Applying Median " + kernelValue);
         	Imgproc.medianBlur(sourceMat, targetMat, kernelValue);
     		break;
-    	case 3:
+    	case Gaussian:
     		text.append("Applying Gaussian " + kernelValue + " Sigma:" + sigmaValue);
         	Imgproc.GaussianBlur(sourceMat, targetMat, sz, sigmaValue);
     		break;

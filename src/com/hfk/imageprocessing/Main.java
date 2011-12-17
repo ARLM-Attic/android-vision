@@ -5,11 +5,8 @@ import android.app.ListActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.view.View;
-import android.widget.Toast;
 import android.content.res.Resources;
 import android.content.Intent;
-
-import com.hfk.imageprocessing.blur.*;
 
 public class Main extends ListActivity {
 	
@@ -17,8 +14,8 @@ public class Main extends ListActivity {
 	public static final String FILTER_GROUP_BLUR = "FilterGroupBlur";
 	public static final String FILTER_GROUP_MATHMORPH = "FilterGroupMathMorph";
 	
-	public void onCreate(Bundle icicle) {
-		super.onCreate(icicle);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		// Create an array of Strings, that will be put to our ListActivity
 		Resources res = getResources();
 		String[] names = res.getStringArray(R.array.filters_available);

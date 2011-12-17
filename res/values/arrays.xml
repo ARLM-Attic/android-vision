@@ -21,4 +21,10 @@
         <item>Tophat</item>
         <item>Gradient</item>
     </string-array>    
+    <string-array name="filters_mathmorph_kernelshapes">
+        <item>Rectangular</item>
+        <item>Ellipse</item>
+        <item>Cross</item>
+        <item>Custom</item>
+    </string-array>    
 </resources>

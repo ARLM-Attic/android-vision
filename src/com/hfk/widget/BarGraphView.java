@@ -46,9 +46,9 @@ public class BarGraphView extends View {
 	    for (int i = 0; i < mNumberOfBars; i++) {
 	    	c.drawRect(
 	    			/* left */   i*this.getWidth()/mNumberOfBars, 
-	    			/* top */    0, 
+	    			/* top */    (float) (mBarValueList.get(i)*this.getHeight()/mMaxBarValue), 
 	    			/* right */  (i+1)*this.getWidth()/mNumberOfBars, 
-	    			/* bottom */ (float) (mBarValueList.get(i)*this.getHeight()/mMaxBarValue), 
+	    			/* bottom */ 0, 
 	    			paint);
 	    }
 	}
