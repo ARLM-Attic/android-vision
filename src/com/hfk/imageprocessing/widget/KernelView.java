@@ -43,16 +43,6 @@ public class KernelView extends MatrixView {
     public int getKernelValue(int colIndex, int rowIndex) {
     	return Integer.decode(getCellText(colIndex, rowIndex));
     }
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-    	int touchedColumnIndex = getColumnAtPoint((int)event.getX());
-    	int touchedRowIndex = getRowAtPoint((int)event.getY());
-    	
-    	setKernelCenter(touchedColumnIndex, touchedRowIndex);
-    	
-    	return true;
-    }
     
     private int kernelCenterX;
     private int kernelCenterY;

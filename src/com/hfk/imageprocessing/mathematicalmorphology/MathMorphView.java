@@ -149,6 +149,8 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     	case 3:
     		configBundle = new Bundle();
     		configBundle.putInt("KERNEL_SIZE", kernel);
+    		configBundle.putInt("KERNEL_CENTERX", (kernel-1)/2);
+    		configBundle.putInt("KERNEL_CENTERY", (kernel-1)/2);
     		configBundle.putInt("KERNEL_SHAPE", shape);
     		break;
 		default:

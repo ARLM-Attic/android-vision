@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 
+import com.hfk.widget.*;
 import com.hfk.imageprocessing.R;
 import com.hfk.imageprocessing.widget.*;
 
@@ -67,6 +68,17 @@ public class BoxConfig extends Activity {
         		}    
         	}
         });
+        
+        mKernelMatrix.setOnCellTouchHandler(new MatrixView.OnCellTouchHandler() {			
+			@Override
+			public void OnCellTouch(int colIndex, int rowIndex) {
+		    	mKernelMatrix.setKernelCenter(colIndex, rowIndex);
+			}
+			
+			@Override
+			public void OnCellLongTouch(int colIndex, int rowIndex) {
+			}
+		});
 	}
 	
 	@Override public void onResume() {     

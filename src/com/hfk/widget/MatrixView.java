@@ -1,6 +1,7 @@
 package com.hfk.widget;
 
 import android.view.*;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.content.*;
 import android.graphics.*;
 import android.util.*;
@@ -8,9 +9,16 @@ import android.util.*;
 import java.util.*;
 
 public class MatrixView extends View {
+	
+	public static interface OnCellTouchHandler {
+		public abstract void OnCellTouch(int colIndex, int rowIndex);
+		public abstract void OnCellLongTouch(int colIndex, int rowIndex);
+	}
 
 	public MatrixView(Context context, AttributeSet attrs){
         super(context, attrs);
+        
+        gestureDetector = new GestureDetector(null, new MyGestureDetector(), null, true);
 	}	
 	
 	public void setNumberOfColumns(int numberOfColumns) {
@@ -72,6 +80,19 @@ public class MatrixView extends View {
 		
 		mCellStyleMatrix.get(colIndex).add(rowIndex, color);
 	}
+	
+	public void setOnCellTouchHandler(OnCellTouchHandler onCellTouchHandler){
+		mOnCellTouchHandler = onCellTouchHandler;
+	}
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (gestureDetector.onTouchEvent(event)) {
+	        return true;        	
+        }
+
+        return false;
+    }
 
     @Override
 	protected void onDraw(Canvas c){
@@ -142,8 +163,42 @@ public class MatrixView extends View {
 	    }
 	}
     
+
+    class MyGestureDetector extends SimpleOnGestureListener {
+    	public static final String X_COORD = "xCoord"; 
+    	public static final String Y_COORD = "xCoord"; 
+    	
+        @Override
+        public void onLongPress(MotionEvent event) {
+        	
+        	int touchedColumnIndex = getColumnAtPoint((int)event.getX());
+        	int touchedRowIndex = getRowAtPoint((int)event.getY());
+        	
+        	mOnCellTouchHandler.OnCellTouch(touchedColumnIndex, touchedRowIndex);
+        }
+        
+        @Override
+        public boolean onDoubleTap(MotionEvent event) {
+        	return true;
+        }
+        
+        @Override
+        public boolean onSingleTapConfirmed(MotionEvent event) {
+        	
+        	int touchedColumnIndex = getColumnAtPoint((int)event.getX());
+        	int touchedRowIndex = getRowAtPoint((int)event.getY());
+        	
+        	mOnCellTouchHandler.OnCellTouch(touchedColumnIndex, touchedRowIndex);
+
+        	return true;
+        }
+    }
+    
     private int mNumberOfColumns = 0;
     private int mNumberOfRows = 0;
     private List<List<String>> mCellValueMatrix;
     private List<List<Integer>> mCellStyleMatrix;
+    
+	private GestureDetector gestureDetector;
+    private OnCellTouchHandler mOnCellTouchHandler;
 }
