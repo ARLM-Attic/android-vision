@@ -1,8 +1,7 @@
-package com.hfk.imageprocessing.histogram;
+package com.hfk.imageprocessing.edgedetection;
 
 import org.opencv.core.Mat;
-import org.opencv.core.Point;
-import org.opencv.core.Size;
+import org.opencv.core.CvType;
 import org.opencv.imgproc.Imgproc;
 
 import android.content.Context;
@@ -13,11 +12,12 @@ import com.hfk.imageprocessing.ImageProcessingView;
 import com.hfk.imageprocessing.R;
 import com.hfk.imageprocessing.gesture.ActionGesture;
 
-public class HistogramView extends ImageProcessingView implements ActionGesture {
+public class EdgeDetectionView extends ImageProcessingView implements ActionGesture {
 	static final int None = 0;
-	static final int Equalizaton = 1;
+	static final int Sobel = 1;
+	static final int Canny = 2;
 	
-    public HistogramView(Context context) {
+    public EdgeDetectionView(Context context) {
         super(context);
     }
 
@@ -30,7 +30,7 @@ public class HistogramView extends ImageProcessingView implements ActionGesture 
     	}
     	String title = "nothing";
     	try {
-    		title = res.getString(R.string.filters_histogram_title);        		
+    		title = res.getString(R.string.filters_edgedetection_title);        		
     	}
     	catch (Resources.NotFoundException ex) {
     		return "nfexception";
@@ -45,7 +45,7 @@ public class HistogramView extends ImageProcessingView implements ActionGesture 
     @Override
     protected String[] getAvailableFilters() {
     	Resources res = getResources();
-    	return res.getStringArray(R.array.filters_histogram_items);
+    	return res.getStringArray(R.array.filters_edgedetection_items);
     }
     
     public void onTapLeft() {
@@ -61,7 +61,8 @@ public class HistogramView extends ImageProcessingView implements ActionGesture 
     	switch(filter) {
     	case None:
     		break;
-    	case Equalizaton:
+    	case Sobel:
+    	case Canny:
     		break;
 		default:
 			break;
@@ -77,7 +78,8 @@ public class HistogramView extends ImageProcessingView implements ActionGesture 
     	switch(filter) {
     	case None:
     		break;
-    	case Equalizaton:
+    	case Sobel:
+    	case Canny:
     		break;
 		default:
 			break;
@@ -94,9 +96,13 @@ public class HistogramView extends ImageProcessingView implements ActionGesture 
     		text.append("Applying None");
     		sourceMat.copyTo(targetMat);
     		break;
-    	case Equalizaton:
-    		text.append("Applying Equalization");
-    		Imgproc.equalizeHist(sourceMat, targetMat);
+    	case Sobel:
+    		text.append("Applying Sobel");
+    		Imgproc.Sobel(sourceMat, targetMat, CvType.CV_8U, 0, 1, 3, 0.4, 128);
+    		break;
+    	case Canny:
+    		text.append("Applying Sobel");
+    		Imgproc.Canny(sourceMat, targetMat, 150, 250, 3);
     		break;
 		default:
 			text.append("Applying Default");

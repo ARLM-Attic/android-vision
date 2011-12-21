@@ -219,6 +219,6 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
 		default:
 			text.append("Applying Default");
 			break;
-      }
-    }
+    	}
+	}
 }

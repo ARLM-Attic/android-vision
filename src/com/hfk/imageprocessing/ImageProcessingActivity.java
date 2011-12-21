@@ -16,6 +16,9 @@ import android.view.GestureDetector.SimpleOnGestureListener;
 
 import com.hfk.imageprocessing.blur.BlurView;
 import com.hfk.imageprocessing.mathematicalmorphology.MathMorphView;
+import com.hfk.imageprocessing.histogram.HistogramView;
+import com.hfk.imageprocessing.houghtransform.HoughTransformView;
+import com.hfk.imageprocessing.edgedetection.EdgeDetectionView;
 import com.hfk.imageprocessing.gesture.*;
 
 public class ImageProcessingActivity extends Activity {
@@ -113,6 +116,21 @@ public class ImageProcessingActivity extends Activity {
 		{
 			setMathMorphView();
 		}
+		
+		if(param1.equals(Main.FILTER_GROUP_HISTOGRAM))
+		{
+			setHistogramView();
+		}
+		
+		if(param1.equals(Main.FILTER_GROUP_EDGEDETECTION))
+		{
+			setEdgeDetectionView();
+		}
+		
+		if(param1.equals(Main.FILTER_GROUP_HOUGHTRANSFORM))
+		{
+			setHoughTransformView();
+		}
 
         gestureDetector = new GestureDetector(null, new MyGestureDetector(), null, true);
         pinchDetector = new PinchGestureDetector(new MyPinchDetector());
@@ -132,6 +150,27 @@ public class ImageProcessingActivity extends Activity {
 
 		mainView = mathMorphView;
 		actionGesture = mathMorphView;
+    }
+    
+    public void setHistogramView() {
+    	HistogramView histogramView = new HistogramView(this);
+
+		mainView = histogramView;
+		actionGesture = histogramView;
+    }
+    
+    public void setEdgeDetectionView() {
+    	EdgeDetectionView edgeDetectionView = new EdgeDetectionView(this);
+
+		mainView = edgeDetectionView;
+		actionGesture = edgeDetectionView;
+    }
+    
+    public void setHoughTransformView() {
+    	HoughTransformView houghTransformView = new HoughTransformView(this);
+
+		mainView = houghTransformView;
+		actionGesture = houghTransformView;
     }
 
 	/**

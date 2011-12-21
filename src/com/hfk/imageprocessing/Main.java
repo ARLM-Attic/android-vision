@@ -13,6 +13,9 @@ public class Main extends ListActivity {
 	public static final String FILTER_GROUP = "FilterGroup";
 	public static final String FILTER_GROUP_BLUR = "FilterGroupBlur";
 	public static final String FILTER_GROUP_MATHMORPH = "FilterGroupMathMorph";
+	public static final String FILTER_GROUP_HISTOGRAM = "FilterGroupHistogram";
+	public static final String FILTER_GROUP_EDGEDETECTION = "FilterGroupEdgeDetection";
+	public static final String FILTER_GROUP_HOUGHTRANSFORM = "FilterGroupHoughTransform";
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +37,12 @@ public class Main extends ListActivity {
 			bundle.putString(FILTER_GROUP, FILTER_GROUP_BLUR);
 		if(position == 1)
 			bundle.putString(FILTER_GROUP, FILTER_GROUP_MATHMORPH);
+		if(position == 2)
+			bundle.putString(FILTER_GROUP, FILTER_GROUP_HISTOGRAM);
+		if(position == 3)
+			bundle.putString(FILTER_GROUP, FILTER_GROUP_EDGEDETECTION);
+		if(position == 4)
+			bundle.putString(FILTER_GROUP, FILTER_GROUP_HOUGHTRANSFORM);
 
 		Intent myIntent = new Intent(Main.this, ImageProcessingActivity.class);
 		//Intent myIntent = new Intent(Main.this, DrawableImageProcessingActivity.class);
