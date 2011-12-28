@@ -30,6 +30,8 @@ public class KernelView extends MatrixView {
     
     public void setKernelValue(int colIndex, int rowIndex, int value){
     	setCellText(colIndex, rowIndex, Integer.toString(value));
+    	
+    	invalidate();    	
     }
     
     public int getCenterX(){

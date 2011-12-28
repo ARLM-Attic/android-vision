@@ -24,6 +24,7 @@ public class MatrixView extends View {
 	public void setNumberOfColumns(int numberOfColumns) {
 		mNumberOfColumns = numberOfColumns;
 		mCellStyleMatrix = null;
+		mCellValueMatrix = null;
 	}
 	
 	public int getNumberOfColumns() {
@@ -33,6 +34,7 @@ public class MatrixView extends View {
 	public void setNumberOfRows(int numberOfRows) {
 		mNumberOfRows = numberOfRows;
 		mCellStyleMatrix = null;
+		mCellValueMatrix = null;
 	}
 	
 	public int getNumberOfRows() {
@@ -53,13 +55,13 @@ public class MatrixView extends View {
 			
 			for(int i=0; i<mNumberOfColumns; i++) {
 				mCellValueMatrix.add(new ArrayList<String>());
-				for(int j=0; j<mNumberOfColumns; j++) {
+				for(int j=0; j<mNumberOfRows; j++) {
 					mCellValueMatrix.get(i).add("");
 				}
 			}
 		}
 		
-		mCellValueMatrix.get(colIndex).add(rowIndex, text);
+		mCellValueMatrix.get(colIndex).set(rowIndex, text);
 	}
 	
 	public String getCellText(int colIndex, int rowIndex) {
@@ -72,13 +74,13 @@ public class MatrixView extends View {
 			
 			for(int i=0; i<mNumberOfColumns; i++) {
 				mCellStyleMatrix.add(new ArrayList<Integer>());
-				for(int j=0; j<mNumberOfColumns; j++) {
+				for(int j=0; j<mNumberOfRows; j++) {
 					mCellStyleMatrix.get(i).add(Color.WHITE);
 				}
 			}
 		}
 		
-		mCellStyleMatrix.get(colIndex).add(rowIndex, color);
+		mCellStyleMatrix.get(colIndex).set(rowIndex, color);
 	}
 	
 	public void setOnCellTouchHandler(OnCellTouchHandler onCellTouchHandler){
@@ -134,7 +136,7 @@ public class MatrixView extends View {
 	    
 	    if(mCellStyleMatrix != null) {
 			for(int i=0; i<mNumberOfColumns; i++) {
-				for(int j=0; j<mNumberOfColumns; j++) {
+				for(int j=0; j<mNumberOfRows; j++) {
 					int color = mCellStyleMatrix.get(i).get(j);
 					if(color != Color.WHITE) {
 					    paint.setColor(color);
@@ -148,14 +150,15 @@ public class MatrixView extends View {
 			}	    	
 	    }
 	    
+	    paint.setColor(Color.BLACK);
 	    if(mCellValueMatrix != null) {
 			for(int i=0; i<mNumberOfColumns; i++) {
-				for(int j=0; j<mNumberOfColumns; j++) {
+				for(int j=0; j<mNumberOfRows; j++) {
 					String text = mCellValueMatrix.get(i).get(j);
 					if((text != null) && (text != ""))  {
 						c.drawText(/* text */ text, 
-								/* x */ j * cellHeight, 
-								/* y */ (i + 1) * cellWidth, 
+								/* x */ i * cellWidth, 
+								/* y */ (j + 1) * cellHeight, 
 								paint);
 					}
 				}

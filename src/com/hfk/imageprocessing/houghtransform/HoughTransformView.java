@@ -97,7 +97,7 @@ public class HoughTransformView extends ImageProcessingView implements ActionGes
     		sourceMat.copyTo(targetMat);
     		break;
     	case Lines:
-    		text.append("Applying Sobel");
+    		text.append("Applying Houghs");
     		//sourceMat.copyTo(targetMat);
     		Imgproc.Canny(sourceMat, targetMat, 125, 350, 3);
     		Imgproc.Canny(sourceMat, cannyMat, 125, 350, 3);

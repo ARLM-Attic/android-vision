@@ -21,7 +21,7 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
 	static final int Tophat = 6;
 	static final int Gradient = 7;
 
-	int kernel = 5;
+	int kernel = 3;
 	int shape = Imgproc.MORPH_RECT;
 	
     public MathMorphView(Context context) {
@@ -163,10 +163,10 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     @Override
     protected void applyFilter(int filter, Mat sourceMat, Mat targetMat, Bundle configValues, StringBuilder text)
     {
-    	int kernelValue = kernel;
+    	int kernelSize = kernel;
     	if(configValues != null && configValues.containsKey("KERNEL_SIZE"))
     	{
-    		kernelValue = configValues.getInt("KERNEL_SIZE", kernel);
+    		kernelSize = configValues.getInt("KERNEL_SIZE", kernel);
     	}
     	int shapeValue = shape;
     	if(configValues != null && configValues.containsKey("KERNEL_SHAPE"))
@@ -174,8 +174,21 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     		shapeValue = configValues.getInt("KERNEL_SHAPE", shapeValue);
     	}
     	
-    	Size sz = new Size(kernelValue, kernelValue); 
-    	Mat kernel = Imgproc.getStructuringElement(shapeValue, sz, new Point(-1, -1));
+    	Mat kernel = null;
+    	if(shapeValue != -1) {
+        	Size sz = new Size(kernelSize, kernelSize); 
+        	kernel = Imgproc.getStructuringElement(shapeValue, sz, new Point(-1, -1));    		
+    	}
+    	else {
+        	if(configValues != null && configValues.containsKey("KERNEL_VALUE_ARRAY")) {
+        		int[] valueArray = configValues.getIntArray("KERNEL_VALUE_ARRAY");
+        		kernel = new Mat(kernelSize, kernelSize, CvType.CV_8U, new Scalar(1));
+        	    for(int col = 0; col < kernelSize; col++)
+        	    	for(int row = 0; row < kernelSize; row++)
+        	    		kernel.put(row, col, valueArray[col * kernelSize + row]);        		
+        	}
+    	}
+    	
     	switch(filter) {
     	case None:
     		text.append("Applying None");

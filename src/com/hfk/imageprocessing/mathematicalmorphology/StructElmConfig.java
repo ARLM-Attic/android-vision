@@ -1,5 +1,7 @@
 package com.hfk.imageprocessing.mathematicalmorphology;
 
+import java.util.ArrayList;
+
 import org.opencv.core.Mat;
 import org.opencv.core.Point;
 import org.opencv.core.Size;
@@ -61,7 +63,17 @@ public class StructElmConfig extends Activity {
         	
         	if(data.containsKey("KERNEL_SHAPE")) {
         		int kernelShape = data.getInt("KERNEL_SHAPE");
-    			mKernelShape.setSelection(kernelShape);
+    			mKernelShape.setSelection(getSelectionFromShape(kernelShape));
+    			
+    			if(kernelShape == -1) {
+    	        	if(data.containsKey("KERNEL_VALUE_ARRAY")) {    
+    	        	    int[] valueArray = data.getIntArray("KERNEL_VALUE_ARRAY");
+    	        	    for(int col = 0; col < mKernelMatrix.getNumberOfColumns(); col++)
+    	        	    	for(int row = 0; row < mKernelMatrix.getNumberOfRows(); row++)
+    	        	    		mKernelMatrix.setKernelValue(col, row, 
+    	        	    				valueArray[col * mKernelMatrix.getNumberOfColumns() + row]);
+    	        	}    				
+    			}
         	}
         }
         
@@ -113,6 +125,15 @@ public class StructElmConfig extends Activity {
         mKernelMatrix.setOnCellTouchHandler(new MatrixView.OnCellTouchHandler() {			
 			@Override
 			public void OnCellTouch(int colIndex, int rowIndex) {
+				if(mKernelShape.getSelectedItemPosition() != 3) {
+					return;
+				}
+				
+				int value = mKernelMatrix.getKernelValue(colIndex, rowIndex);
+				if(value == 0)
+					mKernelMatrix.setKernelValue(colIndex, rowIndex, 1);
+				else
+					mKernelMatrix.setKernelValue(colIndex, rowIndex, 0);
 			}
 			
 			@Override
@@ -126,12 +147,23 @@ public class StructElmConfig extends Activity {
 	@Override
 	public void onBackPressed() {
 	    Intent result = new Intent();
+	    
+	    int kernelSize = Integer.parseInt(mTextKernelSize.getText().toString());
 
 	    Bundle b = new Bundle();
-	    b.putInt("KERNEL_SIZE", Integer.parseInt(mTextKernelSize.getText().toString()));
+	    b.putInt("KERNEL_SIZE", kernelSize);
 	    b.putInt("KERNEL_CENTERX", mKernelMatrix.getCenterX());
 	    b.putInt("KERNEL_CENTERY", mKernelMatrix.getCenterY());
-	    b.putInt("KERNEL_SHAPE", mKernelShape.getSelectedItemPosition());
+	    b.putInt("KERNEL_SHAPE", getShapeFromSelection());
+	    
+	    ArrayList<Integer> valueList = new ArrayList<Integer>();
+	    for(int col = 0; col < kernelSize; col++)
+	    	for(int row = 0; row < kernelSize; row++)
+	    		valueList.add(mKernelMatrix.getKernelValue(col, row));
+	    int[] valueArray = new int[valueList.size()];
+	    for(int i = 0; i < valueList.size(); i++)
+	    	valueArray[i] = valueList.get(i);
+		b.putIntArray("KERNEL_VALUE_ARRAY", valueArray);
 
 	    result.putExtras(b);
 
@@ -155,6 +187,33 @@ public class StructElmConfig extends Activity {
 	    	mKernelMatrix.setKernelCenter((kernelValue-1)/2, (kernelValue-1)/2);			
 		}
 		
+		int kernelShape = getShapeFromSelection();		
+		if(kernelShape != -1){
+	    	Size sz = new Size(kernelValue, kernelValue); 
+	    	Mat kernel = Imgproc.getStructuringElement(
+	    			kernelShape, 
+	    			sz, 
+	    			new Point(mKernelMatrix.getCenterX(), mKernelMatrix.getCenterY()));			
+	    	for(int row = 0; row < kernel.rows(); row++) {
+	    		for(int col = 0; col < kernel.cols(); col++){
+	    			double cellValue = kernel.get(row, col)[0];
+	    			if(cellValue == 1.0) {
+	    				mKernelMatrix.setKernelValue(col, row, 1);
+	    			}
+	    			else {
+	    				mKernelMatrix.setKernelValue(col, row, 0);
+	    			}
+	    		}
+	    	}
+		}
+		else {
+			//mKernelMatrix.setKernelValue(colIndex, rowIndex, value);
+		}
+	    
+    	mKernelMatrix.invalidate();
+	}
+	
+	private int getShapeFromSelection() {
 		int kernelShape = Imgproc.MORPH_RECT;
 		switch(mKernelShape.getSelectedItemPosition()){
 		case 0:
@@ -171,30 +230,30 @@ public class StructElmConfig extends Activity {
 			break;
 		}
 		
-		if(kernelShape != -1){
-	    	Size sz = new Size(kernelValue, kernelValue); 
-	    	Mat kernel = Imgproc.getStructuringElement(
-	    			kernelShape, 
-	    			sz, 
-	    			new Point(mKernelMatrix.getCenterX(), mKernelMatrix.getCenterY()));			
-	    	for(int row = 0; row < kernel.rows(); row++) {
-	    		for(int col = 0; col < kernel.cols(); col++){
-	    			double cellValue = kernel.get(row, col)[0];
-	    			if(cellValue == 1.0) {
-	    				mKernelMatrix.setCellStyle(col, row, Color.RED);
-	    			}
-	    			else {
-	    				mKernelMatrix.setCellStyle(col, row, Color.WHITE);
-	    			}
-	    		}
-	    	}
-		}
-		else {
-			//mKernelMatrix.setKernelValue(colIndex, rowIndex, value);
-		}
-	    
-    	mKernelMatrix.invalidate();
+		return kernelShape;
 	}
+	
+	private int getSelectionFromShape(int shape) {
+		int shapeSelection = 0;
+		switch(shape) {
+		case Imgproc.MORPH_RECT:
+			shapeSelection = 0;
+			break;
+		case Imgproc.MORPH_ELLIPSE:
+			shapeSelection = 1;
+			break;
+		case Imgproc.MORPH_CROSS:
+			shapeSelection = 2;
+			break;
+		case -1:
+			shapeSelection = 3;
+			break;
+		}
+		
+		return shapeSelection;
+	}
+	
+
 
 	private EditText mTextKernelSize;
 	private KernelView mKernelMatrix;
