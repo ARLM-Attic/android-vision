@@ -168,6 +168,18 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     	{
     		kernelSize = configValues.getInt("KERNEL_SIZE", kernel);
     	}
+    	
+    	int kernelCenterX = (kernel-1)/2;
+    	if(configValues != null && configValues.containsKey("KERNEL_CENTERX"))
+    	{
+    		kernelCenterX = configValues.getInt("KERNEL_CENTERX", (kernel-1)/2);
+    	}
+    	int kernelCenterY = (kernel-1)/2;
+    	if(configValues != null && configValues.containsKey("KERNEL_CENTERY"))
+    	{
+    		kernelCenterY = configValues.getInt("KERNEL_CENTERY", (kernel-1)/2);
+    	}
+
     	int shapeValue = shape;
     	if(configValues != null && configValues.containsKey("KERNEL_SHAPE"))
     	{
@@ -196,38 +208,39 @@ public class MathMorphView extends ImageProcessingView implements ActionGesture 
     		break;
     	case Erosion:
     		text.append("Applying Erosion"); // " + kernelValue);
+    		//Imgproc.adaptiveThreshold(sourceMat, targetMat, 255, Imgproc.ADAPTIVE_THRESH_MEAN_C , Imgproc.THRESH_BINARY, 3, 0.0);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.erode(targetMat, targetMat, kernel);
+        	Imgproc.erode(targetMat, targetMat, kernel, new Point(kernelCenterX, kernelCenterY));
     		break;
     	case Dilation:
     		text.append("Applying Dilation"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.dilate(targetMat, targetMat, kernel);
+        	Imgproc.dilate(targetMat, targetMat, kernel, new Point(kernelCenterX, kernelCenterY));
     		break;
     	case Opening:
     		text.append("Applying Opening"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_OPEN, kernel);
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_OPEN, kernel, new Point(kernelCenterX, kernelCenterY));
     		break;
     	case Closing:
     		text.append("Applying Closing"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_CLOSE, kernel);
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_CLOSE, kernel, new Point(kernelCenterX, kernelCenterY));
     		break;
     	case Blackhat:
     		text.append("Applying Blackhat"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_BLACKHAT, kernel);
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_BLACKHAT, kernel, new Point(kernelCenterX, kernelCenterY));
     		break;
     	case Tophat:
     		text.append("Applying Tophat"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_TOPHAT, kernel);
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_TOPHAT, kernel, new Point(kernelCenterX, kernelCenterY));
     		break;
     	case Gradient:
     		text.append("Applying Gradient"); // " + kernelValue);
     		Imgproc.threshold(sourceMat, targetMat, 128, 255, Imgproc.THRESH_BINARY);
-        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_GRADIENT, kernel);
+        	Imgproc.morphologyEx(targetMat, targetMat, Imgproc.MORPH_GRADIENT, kernel, new Point(kernelCenterX, kernelCenterY));
     		break;
 		default:
 			text.append("Applying Default");

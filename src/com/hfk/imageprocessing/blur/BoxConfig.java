@@ -20,7 +20,7 @@ public class BoxConfig extends Activity {
         super.onCreate(savedInstanceState);
         this.setContentView(R.layout.blur_box);
         
-        mTextKernelSize = (EditText)findViewById(R.id.editKernalSizeBox);
+        mTextKernelSize = (EditText)findViewById(R.id.editKernelSizeBox);
         mKernelMatrix = (KernelView)findViewById(R.id.matrixBoxKernel);
         
         Bundle data = getIntent().getExtras();
@@ -81,10 +81,10 @@ public class BoxConfig extends Activity {
 		});
 	}
 	
-	@Override public void onResume() {     
-		super.onResume(); 
-		//updateKernelMatrix();
-	} 
+//	@Override public void onResume() {     
+//		super.onResume(); 
+//		//updateKernelMatrix();
+//	} 
 
 	@Override
 	public void onBackPressed() {

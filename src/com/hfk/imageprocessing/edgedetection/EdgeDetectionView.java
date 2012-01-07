@@ -10,12 +10,21 @@ import android.os.Bundle;
 
 import com.hfk.imageprocessing.ImageProcessingView;
 import com.hfk.imageprocessing.R;
+import com.hfk.imageprocessing.edgedetection.SobelConfig;
 import com.hfk.imageprocessing.gesture.ActionGesture;
 
 public class EdgeDetectionView extends ImageProcessingView implements ActionGesture {
 	static final int None = 0;
 	static final int Sobel = 1;
 	static final int Canny = 2;
+	
+	int derivXOrder = 1;
+	int derivYOrder = 1;
+	int kernel = 3;
+	double scale = 1.0;
+	double delta = 0.0;
+	double lowerThreshold = 150.0;
+	double upperThreshold = 250.0;
 	
     public EdgeDetectionView(Context context) {
         super(context);
@@ -62,6 +71,8 @@ public class EdgeDetectionView extends ImageProcessingView implements ActionGest
     	case None:
     		break;
     	case Sobel:
+    		configClass = SobelConfig.class;
+    		break;
     	case Canny:
     		break;
 		default:
@@ -79,7 +90,18 @@ public class EdgeDetectionView extends ImageProcessingView implements ActionGest
     	case None:
     		break;
     	case Sobel:
+    		configBundle = new Bundle();
+    		configBundle.putInt("KERNEL_SIZE", kernel);
+    		configBundle.putInt("DERIV_X_ORDER", derivXOrder);
+    		configBundle.putInt("DERIV_Y_ORDER", derivYOrder);
+    		configBundle.putDouble("SCALE", scale);
+    		configBundle.putDouble("DELTA", delta);
+    		break;
     	case Canny:
+    		configBundle = new Bundle();
+    		configBundle.putInt("KERNEL_SIZE", kernel);
+    		configBundle.putDouble("LOWER_THRESHOLD", lowerThreshold);
+    		configBundle.putDouble("LOWER_THRESHOLD", upperThreshold);
     		break;
 		default:
 			break;
@@ -98,11 +120,11 @@ public class EdgeDetectionView extends ImageProcessingView implements ActionGest
     		break;
     	case Sobel:
     		text.append("Applying Sobel");
-    		Imgproc.Sobel(sourceMat, targetMat, CvType.CV_8U, 0, 1, 3, 0.4, 128);
+    		Imgproc.Sobel(sourceMat, targetMat, CvType.CV_8U, derivXOrder, derivYOrder, kernel, scale, delta);
     		break;
     	case Canny:
     		text.append("Applying Sobel");
-    		Imgproc.Canny(sourceMat, targetMat, 150, 250, 3);
+    		Imgproc.Canny(sourceMat, targetMat, lowerThreshold, upperThreshold, kernel);
     		break;
 		default:
 			text.append("Applying Default");

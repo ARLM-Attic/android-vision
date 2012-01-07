@@ -132,22 +132,17 @@ public class BlurView extends ImageProcessingView implements ActionGesture {
     	Class<?> configClass = null; 
     	switch(filter) {
     	case None:
-    		//mText = "Applying None";
     		break;
     	case Box:
-    		//mText = "Applying Block";
     		configClass = BoxConfig.class;
     		break;
     	case Median:
-    		//mText = "Applying Median";
     		configClass = MedianConfig.class;
     		break;
     	case Gaussian:
-    		//mText = "Applying Gaussian";
     		configClass = GaussianConfig.class;
     		break;
 		default:
-			//mText = "Applying Default";
 			break;
     	}
     	
